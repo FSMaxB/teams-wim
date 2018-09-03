@@ -1,0 +1,15 @@
+{
+	"description": "Native Notifications for Microsoft Teams",
+	"manifest_version": 2,
+	"name": "native-teams-notifications",
+	"version": "0.0.1",
+	"permissions": [
+		"webRequest",
+		"webRequestBlocking",
+		"notifications",
+		"https://*.teams.microsoft.com/*"
+	],
+	"background": {
+		"scripts": ["notifications.js"]
+	}
+}
