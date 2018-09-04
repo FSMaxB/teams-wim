@@ -1,10 +1,8 @@
 function listener(details) {
 	const url = details.url;
-	console.log("URL", url);
 	if (!url.includes('poll')) {
 		return
 	}
-	console.log("ID:", details.requestId);
 	let filter = browser.webRequest.filterResponseData(details.requestId);
 	let decoder = new TextDecoder("utf-8");
 
@@ -21,25 +19,23 @@ function listener(details) {
 
 	filter.onstop = function () {
         filter.disconnect();
-		console.log(json);
-        if (json.includes("NewMessage")) {
-        	browser.notifications.create({
-				'type': 'basic',
-				//'iconUrl': ...,
-				'title': 'New Message',
-				'message': 'You\'ve got a new message in Microsoft Teams'
-			});
-		}
-		//const parsed_json = JSON.parse(json);
-		/*if (parsed_json.eventMessages !== undefined) {
+		const parsed_json = JSON.parse(json);
+		if (parsed_json.eventMessages !== undefined) {
 			const messages = parsed_json.eventMessages;
 			messages.forEach(message => {
-				if (message.resourceType === "NewMessage") {
-				    console.log("DETECTED MESSAGE");
-					console.log(message.content);
+				if (message.resourceType === 'NewMessage') {
+				    const resource = message.resource;
+				    const sender = resource.imdisplayname;
+				    const content = resource.content;
+                    browser.notifications.create({
+                        'type': 'basic',
+                        //'iconUrl': ...,
+                        'title': 'New Message from ' + sender,
+                        'message': content
+                    });
 				}
 			});
-		}*/
+		}
 	};
 }
 
