@@ -1,7 +1,7 @@
 {
-	"description": "Native Notifications for Microsoft Teams",
+	"description": "(Microsoft) Teams for Web Improved",
 	"manifest_version": 2,
-	"name": "native-teams-notifications",
+	"name": "teams-wim",
 	"version": "0.0.1",
 	"permissions": [
 		"webRequest",
