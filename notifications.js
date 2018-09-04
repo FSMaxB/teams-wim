@@ -26,7 +26,8 @@ function listener(details) {
 				if (message.resourceType === 'NewMessage') {
 				    const resource = message.resource;
 				    const sender = resource.imdisplayname;
-				    const content = resource.content;
+				    const html_content = resource.content;
+				    const content = html_content.replace(/<[^>]*>/g, '');
                     browser.notifications.create({
                         'type': 'basic',
                         //'iconUrl': ...,
