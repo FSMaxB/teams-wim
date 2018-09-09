@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 function listener(details) {
 	const url = details.url;
 	if (!url.includes('poll')) {

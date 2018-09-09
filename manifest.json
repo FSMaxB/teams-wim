@@ -10,6 +10,8 @@
 		"https://*.teams.microsoft.com/*"
 	],
 	"background": {
-		"scripts": ["notifications.js"]
+		"scripts": [
+			"dist/main.js"
+		]
 	}
 }
