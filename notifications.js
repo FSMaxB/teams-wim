@@ -1,5 +1,62 @@
 'use strict';
 
+class EventMessage {
+	constructor(eventMessage) {
+		this.id = eventMessage.id;
+		this.type = eventMessage.resourceType;
+		this.resource = eventMessage.resource;
+	}
+}
+
+class NewMessage {
+	constructor(resource) {
+		this.threadtype = resource.threadtype;
+		this.type = resource.type;
+		this.messagetype = resource.messagetype;
+		this.contentType = resource.contenttype;
+		this.sender = resource.imdisplayname;
+		this.content = resource.content;
+		this.sendTime = resource.composetime;
+		this.receiveTime = resource.originalarrivaltime;
+		this.properties = resource.properties;
+		this.conversationLink = resource.conversationLink;
+	}
+
+	get conversation() {
+		const conversationIdRegex = /conversations\/([0-9a-z:\-_]*)@/;
+		const conversationIdMatch = this.conversationLink.match(conversationIdRegex);
+		if (Array.isArray(conversationIdMatch) && (conversationIdMatch.length === 2)) {
+			return conversationIdMatch[1];
+		}
+
+		return null;
+	}
+
+	get plainContent() {
+		return this.content.replace(/<[^>]*>/g, '');
+	}
+}
+
+function receive(json) {
+	if (json.eventMessages !== undefined) {
+		const eventMessages = json.eventMessages;
+		eventMessages
+			.map(json => new EventMessage(json))
+			.forEach(eventMessage => {
+				if (eventMessage.type === 'NewMessage') {
+					const newMessage = new NewMessage(eventMessage.resource);
+					if ((newMessage.type === 'Message') && (newMessage.messagetype.includes('Text'))) {
+						browser.notifications.create({
+							type: 'basic',
+							'title': `New message from ${newMessage.sender}`,
+							'message': newMessage.plainContent,
+						});
+					}
+				}
+			});
+	}
+}
+
 function listener(details) {
 	const url = details.url;
 	if (!url.includes('poll')) {
@@ -21,24 +78,7 @@ function listener(details) {
 
 	filter.onstop = function () {
 		filter.disconnect();
-		const parsed_json = JSON.parse(json);
-		if (parsed_json.eventMessages !== undefined) {
-			const messages = parsed_json.eventMessages;
-			messages.forEach(message => {
-				if (message.resourceType === 'NewMessage') {
-					const resource = message.resource;
-					const sender = resource.imdisplayname;
-					const html_content = resource.content;
-					const content = html_content.replace(/<[^>]*>/g, '');
-					browser.notifications.create({
-						'type': 'basic',
-						//'iconUrl': ...,
-						'title': 'New Message from ' + sender,
-						'message': content
-					});
-				}
-			});
-		}
+		receive(JSON.parse(json));
 	};
 }
 
