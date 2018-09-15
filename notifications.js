@@ -1,3 +1,4 @@
+'use strict';
 function listener(details) {
 	const url = details.url;
 	if (!url.includes('poll')) {
