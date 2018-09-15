@@ -1,0 +1,16 @@
+{
+  "name": "teams-wim",
+  "version": "0.0.1",
+  "description": "(Microsoft) Teams for Web Improved",
+  "main": "notifications.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.6.0"
+  },
+  "private": true,
+  "author": "Max Bruckner",
+  "license": "ISC"
+}
