@@ -11,5 +11,10 @@
 	],
 	"background": {
 		"scripts": ["notifications.js"]
+	},
+	"applications": {
+		"gecko": {
+			"id": "teams-wim@maxbruckner.de",
+		}
 	}
 }
