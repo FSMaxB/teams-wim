@@ -53,6 +53,22 @@ class NewMessage {
 	get plainContent() {
 		return this.content.replace(/<[^>]*>/g, '');
 	}
+
+	get isImportant() {
+		if (this.properties === undefined) {
+			return false;
+		}
+
+		return this.properties.importance === 'high';
+	}
+
+	get isTeamMessage() {
+		return this.threadtype === 'space';
+	}
+
+	get isChatMessage() {
+		return this.threadtype === 'chat';
+	}
 }
 
 function receive(json) {
@@ -64,9 +80,20 @@ function receive(json) {
 				if (eventMessage.type === 'NewMessage') {
 					const newMessage = new NewMessage(eventMessage.resource);
 					if ((newMessage.type === 'Message') && (newMessage.messagetype.includes('Text'))) {
+						let title = 'New ';
+						if (newMessage.isImportant) {
+							title += 'IMPORTANT ';
+						}
+						if (newMessage.isTeamMessage) {
+							title += 'team ';
+						} else if (newMessage.isChatMessage) {
+							title += 'chat ';
+						}
+						title += `message from ${newMessage.sender}`;
+
 						browser.notifications.create({
 							type: 'basic',
-							'title': `New message from ${newMessage.sender}`,
+							'title': title,
 							'message': newMessage.plainContent,
 						});
 					}
