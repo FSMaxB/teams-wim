@@ -1,16 +1,17 @@
 'use strict';
+
 function listener(details) {
 	const url = details.url;
 	if (!url.includes('poll')) {
-		return
+		return;
 	}
 	let filter = browser.webRequest.filterResponseData(details.requestId);
-	let decoder = new TextDecoder("utf-8");
+	let decoder = new TextDecoder('utf-8');
 
-	let json = "";
+	let json = '';
 
 	filter.ondata = event => {
-        json += decoder.decode(event.data, {stream: true});
+		json += decoder.decode(event.data, {stream: true});
 		filter.write(event.data);
 	};
 
@@ -19,22 +20,22 @@ function listener(details) {
 	};
 
 	filter.onstop = function () {
-        filter.disconnect();
+		filter.disconnect();
 		const parsed_json = JSON.parse(json);
 		if (parsed_json.eventMessages !== undefined) {
 			const messages = parsed_json.eventMessages;
 			messages.forEach(message => {
 				if (message.resourceType === 'NewMessage') {
-				    const resource = message.resource;
-				    const sender = resource.imdisplayname;
-				    const html_content = resource.content;
-				    const content = html_content.replace(/<[^>]*>/g, '');
-                    browser.notifications.create({
-                        'type': 'basic',
-                        //'iconUrl': ...,
-                        'title': 'New Message from ' + sender,
-                        'message': content
-                    });
+					const resource = message.resource;
+					const sender = resource.imdisplayname;
+					const html_content = resource.content;
+					const content = html_content.replace(/<[^>]*>/g, '');
+					browser.notifications.create({
+						'type': 'basic',
+						//'iconUrl': ...,
+						'title': 'New Message from ' + sender,
+						'message': content
+					});
 				}
 			});
 		}
