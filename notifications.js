@@ -1,5 +1,23 @@
 'use strict';
 
+let settings = {
+	ignoredConversations: [],
+	ignoredUsers: [],
+	onlyImportant: false,
+};
+
+browser.storage.local.get().then(loadedSettings => {
+	settings = loadedSettings;
+});
+
+browser.storage.onChanged.addListener((changes, areaName) => {
+	if (areaName === 'local') {
+		for (const key in changes) {
+			settings[key] = changes[key].newValue;
+		}
+	}
+});
+
 class EventMessage {
 	constructor(eventMessage) {
 		this.id = eventMessage.id;
