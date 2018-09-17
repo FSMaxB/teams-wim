@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" version="1.1">
+  <rect id="background" y="7" x="7" height="34" width="34" style="fill:white" />
+  <g id="icon">
+    <g id="window">
+      <g id="bars">
+        <path id="horizontal-bar" d="M 7,24 H 41" style="stroke:black;stroke-width:2" />
+        <path id="vertical-bar" d="M 24,7 V 41" style="stroke:black;stroke-width:2" />
+      </g>
+      <rect id="frame" x="7" y="7" width="34" height="34" style="fill:none;stroke:black;stroke-width:2"/>
+    </g>
+    <circle id="circle" style="fill:red" cx="40.5" cy="7.5" r="7.5" />
+  </g>
+</svg>

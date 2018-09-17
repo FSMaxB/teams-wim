@@ -17,6 +17,10 @@
     "page": "options.html",
     "browser_style": true
   },
+  "icons": {
+    "48": "icon.svg",
+    "96": "icon.svg"
+  },
   "applications": {
     "gecko": {
       "id": "teams-wim@maxbruckner.de",
