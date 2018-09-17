@@ -1,26 +1,26 @@
 {
-	"description": "(Microsoft) Teams for Web Improved",
-	"manifest_version": 2,
-	"name": "teams-wim",
-	"version": "0.0.1",
-	"permissions": [
-		"webRequest",
-		"webRequestBlocking",
-		"notifications",
-		"storage",
-		"https://*.teams.microsoft.com/*"
-	],
-	"background": {
-		"scripts": ["notifications.js"]
-	},
-	"options_ui": {
-		"page": "options.html",
-		"browser_style": true
-	},
-	"applications": {
-		"gecko": {
-			"id": "teams-wim@maxbruckner.de",
-			"strict_min_version": "60.0"
-		}
-	}
+  "description": "(Microsoft) Teams for Web Improved",
+  "manifest_version": 2,
+  "name": "teams-wim",
+  "version": "0.0.1",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "notifications",
+    "storage",
+    "https://*.teams.microsoft.com/*"
+  ],
+  "background": {
+    "scripts": ["notifications.js"]
+  },
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+  "applications": {
+    "gecko": {
+      "id": "teams-wim@maxbruckner.de",
+      "strict_min_version": "60.0"
+    }
+  }
 }
