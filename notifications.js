@@ -4,19 +4,39 @@ let settings = {
 	ignoredConversations: [],
 	ignoredUsers: [],
 	onlyImportant: false,
+	enabled: true
 };
 
-browser.storage.local.get().then(loadedSettings => {
-	settings = loadedSettings;
-});
-
-browser.storage.onChanged.addListener((changes, areaName) => {
-	if (areaName === 'local') {
-		for (const key in changes) {
-			settings[key] = changes[key].newValue;
+function updateIcon() {
+	const enabled = (settings.enabled === undefined) || settings.enabled;
+	const title = (() => {
+		if (enabled === true) {
+			return 'teams-wim: Notifications enabled';
 		}
-	}
-});
+		return 'teams-wim: Notifications disabled';
+	})();
+	const icon = (() => {
+		if (enabled == true) {
+			return 'icon.svg';
+		}
+
+		return 'icon-inactive.svg';
+	})();
+	browser.browserAction.setTitle({title: title});
+	browser.browserAction.setIcon({
+		path: {
+			'16': icon,
+			'32': icon,
+			'64': icon,
+		}
+	});
+}
+
+function iconClicked(tab) {
+	let enabled = (settings.enabled === undefined) || settings.enabled;
+	settings.enabled = !enabled;
+	browser.storage.local.set({enabled: settings.enabled});
+}
 
 class EventMessage {
 	constructor(eventMessage) {
@@ -117,6 +137,10 @@ function receive(json) {
 }
 
 function listener(details) {
+	if (settings.enabled === false) {
+		return;
+	}
+
 	const url = details.url;
 	if (!url.includes('poll')) {
 		return;
@@ -146,3 +170,19 @@ browser.webRequest.onBeforeRequest.addListener(
 	{urls: ['https://*.teams.microsoft.com/*'], types: ['xmlhttprequest']},
 	['blocking']
 );
+
+browser.browserAction.onClicked.addListener(iconClicked);
+
+browser.storage.local.get().then(loadedSettings => {
+	settings = loadedSettings;
+}).then(() => updateIcon());
+
+browser.storage.onChanged.addListener((changes, areaName) => {
+	if (areaName === 'local') {
+		for (const key in changes) {
+			settings[key] = changes[key].newValue;
+		}
+		updateIcon();
+	}
+});
+
