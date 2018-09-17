@@ -14,6 +14,8 @@ Changelog
 * Blacklist of conversations to ignore
 * Blacklist of Users to ignore (e.g. yourself)
 * Setting: Only notify for important messages
+* Allow enabling/disabling notifications
+* Icon
 
 ### 0.0.1
 * First release, proof of concept
