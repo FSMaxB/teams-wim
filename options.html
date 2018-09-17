@@ -6,16 +6,31 @@
 <body>
     <div>
         <div>
-            <p><label for="ignored-conversations">Ignored conversations:</label></p>
+            <h1><label for="ignored-conversations">Ignored Conversations</label></h1>
+            <p>
+                IDs of conversations that shouldn't trigger a notification. To find the conversation ID, select the conversation (chat or channel) in teams.
+                <ul>
+                    <li>
+                        <b>For Channels:</b> Copy the id between <code>threadId=</code> and <code>@</code>.
+                    </li>
+                    <li>
+                        <b>For Chats:</b> Copy the id between <code>_#conversations/</code> and <code>@</code>.
+                    </li>
+                </ul>
+            </p>
             <textarea id="ignored-conversations" rows="10" cols="100"></textarea>
         </div>
         <div>
-            <p><label for="ignored-users">Ignored users:</label></p>
+            <h1><label for="ignored-users">Ignored Users</label></h1>
+            <p>You probably want to put your own name in there. The name needs to be the same as is displayed in the notifications.</p>
             <textarea id="ignored-users" rows="10" cols="100"></textarea>
         </div>
         <div>
-            <label for="important-only">Only important messages</label>
-            <input type="checkbox" id="important-only"/>
+            <h1>Other Settings</h1>
+            <p>
+                <input type="checkbox" id="important-only"/>
+                <label for="important-only">Only important messages</label>
+            </p>
         </div>
         <div>
             <p><button id="save">Save</button></p>
