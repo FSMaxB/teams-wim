@@ -14,6 +14,13 @@ document.querySelector('#save').onclick = () => {
 	browser.storage.local.set(settings);
 };
 
+document.querySelector('#reset').onclick = () => {
+	browser.storage.local.clear();
+	ignoredConversations.value = '';
+	ignoredUsers.value = '';
+	onlyImportant.checked = false;
+};
+
 browser.storage.local.get().then(settings => {
 	ignoredConversations.value = settings.ignoredConversations.join('\n');
 	ignoredUsers.value = settings.ignoredUsers.join('\n');
