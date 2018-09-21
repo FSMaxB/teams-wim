@@ -1,5 +1,12 @@
 'use strict';
 
+const defaultSettings = {
+	ignoredConversations: [],
+	ignoredUsers: [],
+	onlyImportant: false,
+	enabled: true
+};
+
 let settings = {
 	ignoredConversations: [],
 	ignoredUsers: [],
@@ -8,15 +15,14 @@ let settings = {
 };
 
 function updateIcon() {
-	const enabled = (settings.enabled === undefined) || settings.enabled;
 	const title = (() => {
-		if (enabled === true) {
+		if (settings.enabled === true) {
 			return 'teams-wim: Notifications enabled';
 		}
 		return 'teams-wim: Notifications disabled';
 	})();
 	const icon = (() => {
-		if (enabled == true) {
+		if (settings.enabled === true) {
 			return 'icon.svg';
 		}
 
@@ -32,9 +38,8 @@ function updateIcon() {
 	});
 }
 
-function iconClicked(tab) {
-	let enabled = (settings.enabled === undefined) || settings.enabled;
-	settings.enabled = !enabled;
+function iconClicked(/* tab */) {
+	settings.enabled = !settings.enabled;
 	browser.storage.local.set({enabled: settings.enabled});
 }
 
@@ -165,6 +170,14 @@ function listener(details) {
 	};
 }
 
+function valueOrDefault(value, defaultValue) {
+	if (value === undefined) {
+		return defaultValue;
+	}
+
+	return value;
+}
+
 browser.webRequest.onBeforeRequest.addListener(
 	listener,
 	{urls: ['https://*.teams.microsoft.com/*'], types: ['xmlhttprequest']},
@@ -174,7 +187,9 @@ browser.webRequest.onBeforeRequest.addListener(
 browser.browserAction.onClicked.addListener(iconClicked);
 
 browser.storage.local.get().then(loadedSettings => {
-	settings = loadedSettings;
+	for (const setting in defaultSettings) {
+		settings[setting] = valueOrDefault(loadedSettings[setting], defaultSettings[setting]);
+	}
 }).then(() => updateIcon());
 
 browser.storage.onChanged.addListener((changes, areaName) => {
