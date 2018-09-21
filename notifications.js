@@ -76,7 +76,8 @@ class NewMessage {
 	}
 
 	get plainContent() {
-		return this.content.replace(/<[^>]*>/g, '');
+		const content = valueOrDefault(this.content, '');
+		return content.replace(/<[^>]*>/g, '');
 	}
 
 	get isImportant() {
@@ -194,8 +195,8 @@ browser.storage.local.get().then(loadedSettings => {
 
 browser.storage.onChanged.addListener((changes, areaName) => {
 	if (areaName === 'local') {
-		for (const key in changes) {
-			settings[key] = changes[key].newValue;
+		for (const setting in changes) {
+			settings[setting] = valueOrDefault(changes[setting].newValue, defaultSettings[setting]);
 		}
 		updateIcon();
 	}
