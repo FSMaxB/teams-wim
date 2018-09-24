@@ -2,7 +2,7 @@
   "description": "(Microsoft) Teams for Web Improved",
   "manifest_version": 2,
   "name": "teams-wim",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "permissions": [
     "webRequest",
     "webRequestBlocking",
