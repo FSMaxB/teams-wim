@@ -86,7 +86,8 @@ class NewMessage {
 	}
 
 	get plainContent() {
-		const content = valueOrDefault(this.content, '');
+		let content = valueOrDefault(this.content, '');
+		content = content.replace(/<img alt="([^"]+)"[^>]*>/g, '$1'); // Display alt= from image tags
 		return content.replace(/<[^>]*>/g, '');
 	}
 
