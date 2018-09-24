@@ -4,15 +4,23 @@ const defaultSettings = {
 	ignoredConversations: [],
 	ignoredUsers: [],
 	onlyImportant: false,
-	enabled: true
+	enabled: true,
+	debugging: false,
 };
 
 let settings = {
 	ignoredConversations: [],
 	ignoredUsers: [],
 	onlyImportant: false,
-	enabled: true
+	enabled: true,
+	debugging: false,
 };
+
+function debugMessage(message) {
+	if (valueOrDefault(settings.debugging, defaultSettings.debugging) === true) {
+		console.log(`teams-wim: ${message}`);
+	}
+}
 
 function updateIcon() {
 	const title = (() => {
@@ -53,6 +61,8 @@ class EventMessage {
 
 class NewMessage {
 	constructor(resource) {
+		debugMessage(`NewMessage from ${JSON.stringify(resource)}`);
+
 		this.threadtype = resource.threadtype;
 		this.type = resource.type;
 		this.messagetype = resource.messagetype;
@@ -100,21 +110,31 @@ class NewMessage {
 // Determine if a message should trigger a notification (depending on the settings)
 function filterMessage(newMessage) {
 	if (newMessage.type !== 'Message') {
+		debugMessage('Filtered out because type !== Message');
+		return false;
+	}
+
+	if ((newMessage.messagetype !== 'Text') && (newMessage.messagetype !== 'RichText/Html')) {
+		debugMessage('Filtered out because messagetype !== Text and messagetype !== RichText/Html');
 		return false;
 	}
 
 	if (settings.ignoredConversations.includes(newMessage.conversation)) {
+		debugMessage('Filtered out because conversation is ignored.');
 		return false;
 	}
 
 	if (settings.ignoredUsers.includes(newMessage.sender)) {
+		debugMessage('Filtered out because user is ignored.');
 		return false;
 	}
 
 	if (settings.onlyImportant) {
+		debugMessage('Filtered out because not important.');
 		return newMessage.isImportant;
 	}
 
+	debugMessage('Message survived the filter.');
 	return true;
 }
 
@@ -168,6 +188,7 @@ function listener(details) {
 	filter.onstop = function () {
 		filter.disconnect();
 		receive(JSON.parse(json));
+		debugMessage('Response received');
 	};
 }
 
