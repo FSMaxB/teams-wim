@@ -141,6 +141,14 @@ function filterMessage(newMessage) {
 	return true;
 }
 
+function notify(title, message) {
+	browser.notifications.create({
+		type: 'basic',
+		title: title,
+		message: message,
+	});
+}
+
 function receive(json) {
 	if (json.eventMessages !== undefined) {
 		const eventMessages = json.eventMessages;
@@ -156,11 +164,7 @@ function receive(json) {
 				description += newMessage.isChatMessage ? 'chat ' : '';
 
 				const title = `New ${description} message from ${newMessage.sender}`;
-				browser.notifications.create({
-					type: 'basic',
-					'title': title,
-					'message': newMessage.plainContent,
-				});
+				notify(title, newMessage.plainContent);
 			});
 	}
 }
