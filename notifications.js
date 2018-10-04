@@ -18,7 +18,9 @@ let settings = {
 
 function debugMessage(message) {
 	if (valueOrDefault(settings.debugging, defaultSettings.debugging) === true) {
+		/* eslint-disable no-console */
 		console.log(`teams-wim: ${message}`);
+		/* eslint-enable no-console */
 	}
 }
 
