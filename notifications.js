@@ -91,6 +91,7 @@ class NewMessage {
 		let content = valueOrDefault(this.content, '');
 		content = content.replace(/<img alt="([^"]+)"[^>]*>/g, '$1'); // Display alt= from image tags
 		content = content.replace(/&[a-z]+;/gi, ''); // Remove HTML esape sequences like &nbsp;
+		content = content.replace(/\s+/g, ' '); // Replace multiple whitespaces with one
 		return content.replace(/<[^>]*>/g, '');
 	}
 
