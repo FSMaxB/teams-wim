@@ -33,5 +33,9 @@
       "id": "{9f5312bc-1457-48fe-94b1-2a6aaa3fc2a3}",
       "strict_min_version": "60.0"
     }
+  },
+  "developer": {
+    "name": "Max Bruckner",
+    "url": "https://github.com/FSMaxB/teams-wim"
   }
 }
