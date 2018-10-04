@@ -144,6 +144,7 @@ function filterMessage(newMessage) {
 function notify(title, message) {
 	browser.notifications.create({
 		type: 'basic',
+		iconUrl: browser.extension.getURL('icon.svg'),
 		title: title,
 		message: message,
 	});
