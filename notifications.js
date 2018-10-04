@@ -90,6 +90,7 @@ class NewMessage {
 	get plainContent() {
 		let content = valueOrDefault(this.content, '');
 		content = content.replace(/<img alt="([^"]+)"[^>]*>/g, '$1'); // Display alt= from image tags
+		content = content.replace(/&[a-z]+;/gi, ''); // Remove HTML esape sequences like &nbsp;
 		return content.replace(/<[^>]*>/g, '');
 	}
 
