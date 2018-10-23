@@ -61,6 +61,14 @@ class EventMessage {
 	}
 }
 
+function plainify(html) {
+	let content = valueOrDefault(html, '');
+	content = content.replace(/<img alt="([^"]+)"[^>]*>/g, '$1'); // Display alt= from image tags
+	content = content.replace(/&[a-z]+;/gi, ''); // Remove HTML esape sequences like &nbsp;
+	content = content.replace(/\s+/g, ' '); // Replace multiple whitespaces with one
+	return content.replace(/<[^>]*>/g, '');
+}
+
 class NewMessage {
 	constructor(resource) {
 		debugMessage(`NewMessage from ${JSON.stringify(resource)}`);
@@ -88,11 +96,7 @@ class NewMessage {
 	}
 
 	get plainContent() {
-		let content = valueOrDefault(this.content, '');
-		content = content.replace(/<img alt="([^"]+)"[^>]*>/g, '$1'); // Display alt= from image tags
-		content = content.replace(/&[a-z]+;/gi, ''); // Remove HTML esape sequences like &nbsp;
-		content = content.replace(/\s+/g, ' '); // Replace multiple whitespaces with one
-		return content.replace(/<[^>]*>/g, '');
+		return plainify(this.content);
 	}
 
 	get isImportant() {
@@ -142,6 +146,10 @@ class Activity {
 
 	get isReply() {
 		return this.type.includes('reply');
+	}
+
+	get plainContent() {
+		return plainify(this.messagePreview);
 	}
 }
 
