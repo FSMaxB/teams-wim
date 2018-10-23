@@ -110,6 +110,30 @@ class NewMessage {
 	get isChatMessage() {
 		return this.threadtype === 'chat';
 	}
+
+	get isActivity() {
+		return this.properties.hasOwnProperty('activity');
+	}
+
+	get activity() {
+		return new Activity(this.properties.activity);
+	}
+}
+
+class Activity {
+	constructor(activity) {
+		this.type = activity.activityType;
+		this.sender = activity.sourceUserImDisplayName;
+		this.messagePreview = activity.messagePreview;
+	}
+
+	get isLike() {
+		return this.type.includes('like');
+	}
+
+	get isReply() {
+		return this.type.includes('reply');
+	}
 }
 
 // Determine if a message should trigger a notification (depending on the settings)
