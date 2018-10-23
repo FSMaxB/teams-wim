@@ -131,6 +131,20 @@ class NewMessage {
 
 		return this.imdisplayname;
 	}
+
+	notify() {
+		if (this.isActivity) {
+			return this.activity.notify;
+		}
+
+		let description = '';
+		description += this.isImportant ? 'IMPORTANT ' : '';
+		description += this.isTeamMessage ? 'team ' : '';
+		description += this.isChatMessage ? 'chat ' : '';
+
+		const title = `New ${description} message from ${this.sender}`;
+		notify(title, this.plainContent);
+	}
 }
 
 class Activity {
@@ -151,6 +165,18 @@ class Activity {
 
 	get plainContent() {
 		return plainify(this.messagePreview);
+	}
+
+	notify() {
+		const title = {function () {
+			if (this.isLike) {
+				return `(${this.count}) ${this.sender} liked a message`;
+			} else if (this.isReply) {
+				return `${this.sender} replied`;
+			}
+		}}();
+
+		notify(title, this.plainContent);
 	}
 }
 
@@ -202,15 +228,7 @@ function receive(json) {
 			.filter(eventMessage => eventMessage.type === 'NewMessage')
 			.map(eventMessage => new NewMessage(eventMessage.resource))
 			.filter(filterMessage)
-			.forEach(newMessage => {
-				let description = '';
-				description += newMessage.isImportant ? 'IMPORTANT ' : '';
-				description += newMessage.isTeamMessage ? 'team ' : '';
-				description += newMessage.isChatMessage ? 'chat ' : '';
-
-				const title = `New ${description} message from ${newMessage.sender}`;
-				notify(title, newMessage.plainContent);
-			});
+			.forEach(newMessage => newMessage.notify());
 	}
 }
 
