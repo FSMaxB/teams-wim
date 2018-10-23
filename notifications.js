@@ -69,7 +69,7 @@ class NewMessage {
 		this.type = resource.type;
 		this.messagetype = resource.messagetype;
 		this.contentType = resource.contenttype;
-		this.sender = resource.imdisplayname;
+		this.imdisplayname = resource.imdisplayname;
 		this.content = resource.content;
 		this.sendTime = resource.composetime;
 		this.receiveTime = resource.originalarrivaltime;
@@ -117,6 +117,15 @@ class NewMessage {
 
 	get activity() {
 		return new Activity(this.properties.activity);
+	}
+
+	get sender() {
+		if (this.isActivity) {
+			const activity = this.activity;
+			return activity.sender;
+		}
+
+		return this.imdisplayname;
 	}
 }
 
