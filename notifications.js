@@ -138,6 +138,7 @@ class Activity {
 		this.type = activity.activityType;
 		this.sender = activity.sourceUserImDisplayName;
 		this.messagePreview = activity.messagePreview;
+		this.count = activity.count;
 	}
 
 	get isLike() {
